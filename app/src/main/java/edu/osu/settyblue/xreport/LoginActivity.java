@@ -23,12 +23,21 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("LoginActivity", "onCreate called.");
 
         //references to button.
-        final Button button = (Button) findViewById(R.id.login_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button loginbutton = (Button) findViewById(R.id.login_button);
+        loginbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                Intent homeIntent = new Intent(mContext,HomeActivity.class);
+                Intent homeIntent = new Intent(mContext, HomeActivity.class);
                 startActivity(homeIntent);
+            }
+        });
+        //
+        final Button registerbutton = (Button) findViewById(R.id.register_button);
+        registerbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent registerIntent = new Intent(mContext,RegisterActivity.class);
+                startActivity(registerIntent);
             }
         });
     }

@@ -24,6 +24,33 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
+        <activity
+            android:name=".ExpensesActivity"
+            android:label="@string/title_activity_expenses"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.osu.settyblue.xreport.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.osu.settyblue.xreport.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".EditExpenseActivity"
+            android:label="@string/title_activity_edit_expense"
+            android:parentActivityName=".ExpensesActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.osu.settyblue.xreport.ExpensesActivity" />
+        </activity>
     </application>
 
 </manifest>
