@@ -1,5 +1,6 @@
 package edu.osu.settyblue.xreport;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +12,22 @@ import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
 
+    Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.i("HomeActivity", "onCreate called.");
+        mContext = this;
+        //references to button.
+        final Button button = (Button) findViewById(R.id.expensesButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent expensesIntent = new Intent(mContext, ExpensesActivity.class);
+                startActivity(expensesIntent);
+            }
+        });
     }
 
     @Override
