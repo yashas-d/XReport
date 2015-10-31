@@ -55,5 +55,4 @@ public class ExpensesActivity extends AppCompatActivity {
         //
     }
 
-
 }
