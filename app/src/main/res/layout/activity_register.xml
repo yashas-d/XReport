@@ -10,19 +10,19 @@
               android:orientation="vertical"
               android:gravity="center">
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/register_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username"/>
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"/>
 
     <EditText
-        android:id="@+id/confirmPassword"
+        android:id="@+id/register_confirmPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/confirm_password"/>
