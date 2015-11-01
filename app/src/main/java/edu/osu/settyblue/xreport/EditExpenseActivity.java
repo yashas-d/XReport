@@ -19,7 +19,7 @@ import java.util.List;
 
 public class EditExpenseActivity extends AppCompatActivity {
     private static final String TAG = "EditExpenseActivity";
-    Context mContext;
+    EditExpenseActivity mContext;
     private ExpenseItemDataSource datasource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +59,20 @@ public class EditExpenseActivity extends AppCompatActivity {
         addbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                Intent editExpenseItemIntent = new Intent(mContext,EditExpenseItemActivity.class);
+                Intent editExpenseItemIntent = new Intent(mContext, EditExpenseItemActivity.class);
                 startActivity(editExpenseItemIntent);
             }
         });
+
+        //references to button.
+        final ImageButton savebutton = (ImageButton) findViewById(R.id.save_expense);
+        savebutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                mContext.finish();
+            }
+        });
+        //
     }
 
 }

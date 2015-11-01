@@ -40,7 +40,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         //
 
         //references to button.
-        final Button savebutton = (Button) findViewById(R.id.save_button);
+        final Button savebutton = (Button) findViewById(R.id.save_expense_item);
         savebutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
