@@ -27,6 +27,18 @@
         android:layout_height="wrap_content"
         android:hint="@string/confirm_password"/>
 
+    <EditText
+        android:id="@+id/register_emailid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/emailid"/>
+
+    <Spinner
+        android:id="@+id/approver_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </Spinner>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
