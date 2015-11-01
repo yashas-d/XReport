@@ -24,6 +24,13 @@
     <string name="expense_items">Expense Items</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="emailid">Email ID</string>
+    <string name="date">Date</string>
+    <string name="vendor">Vendor</string>
+    <string name="comments">Comments</string>
+    <string name="edit_item">Edit Expense Item</string>
+    <string name="item_name">Expense Item Name</string>
+    <string name="amount">Amount</string>
+    <string name="save">Save</string>
 
     <string-array name="sort_items_array">
         <item>Name</item>
@@ -38,5 +45,24 @@
         <item>Sheryl Sandberg</item>
         <item>Bill Gates</item>
     </string-array>
+    <string-array name="categories_list">
+        <item>Transportation</item>
+        <item>Food</item>
+        <item>Stay</item>
+        <item>Registration</item>
+        <item>Logistics</item>
+        <item>AirFare</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="currency_list">
+        <item>$</item>
+        <item>₤</item>
+        <item>€</item>
+        <item>¥</item>
+        <item>₹</item>
+        <item>₽</item>
+        <item>₣</item>
+    </string-array>
     <string name="title_activity_edit_expense">EditExpense</string>
+    <string name="title_activity_edit_expense_item">EditExpenseItemActivity</string>
 </resources>

@@ -51,6 +51,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.osu.settyblue.xreport.ExpensesActivity" />
         </activity>
+        <activity
+            android:name=".EditExpenseItemActivity"
+            android:label="@string/title_activity_edit_expense_item"
+            android:parentActivityName=".EditExpenseActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.osu.settyblue.xreport.EditExpenseActivity" />
+        </activity>
     </application>
 
 </manifest>

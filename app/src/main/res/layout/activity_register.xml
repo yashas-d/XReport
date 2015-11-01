@@ -16,15 +16,19 @@
         android:hint="@string/username"/>
 
     <EditText
-        android:id="@+id/register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/register_password"
         android:hint="@string/password"/>
 
     <EditText
-        android:id="@+id/register_confirmPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/register_confirmPassword"
         android:hint="@string/confirm_password"/>
 
     <EditText

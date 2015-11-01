@@ -35,7 +35,6 @@ public class ExpenseItemDataSource {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.X_ITEMS_COL_X_ID,10);
         values.put(MySQLiteHelper.X_ITEMS_COL_ITEM_NAME, ExpenseItemName);
-
         long insertId = database.insert(MySQLiteHelper.X_ITEMS_TABLE_NAME,null,values);
         Cursor cursor= database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns, null,
                 null, null, null, null);
