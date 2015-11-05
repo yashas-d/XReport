@@ -39,10 +39,10 @@ public class EditExpenseActivity extends AppCompatActivity {
         datasource.open();
         datasource.deleteAllExpenseItems();
 
-        datasource.createExpenseItem("Hotel Stay");
-        datasource.createExpenseItem("Lunch");
-        datasource.createExpenseItem("Travel");
-        datasource.createExpenseItem("Dinner");
+        //datasource.createExpenseItem("Hotel Stay");
+        //datasource.createExpenseItem("Lunch");
+        //datasource.createExpenseItem("Travel");
+        //datasource.createExpenseItem("Dinner");
 
         List<ExpenseItem> values = datasource.getAllExpenseItems();
         for(int i = 0; i < values.size(); i++){

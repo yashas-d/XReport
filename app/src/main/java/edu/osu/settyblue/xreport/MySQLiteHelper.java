@@ -38,7 +38,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     public static final String USERS_COL_USERNAME = "username";
     public static final String USERS_COL_PASSWORD = "password";
     public static final String USERS_COL_EMAIL = "email";
-    public static final String USERS_COL_APPROVER = "approver_id";
+    public static final String USERS_COL_APPROVER = "approver";
 
     public static final String REPORTS_TABLE_NAME = "reports";
     public static final String REPORTS_COL_ID = "id";

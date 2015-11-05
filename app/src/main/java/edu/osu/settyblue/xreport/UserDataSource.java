@@ -31,17 +31,8 @@ public class UserDataSource {
         values.put(MySQLiteHelper.USERS_COL_USERNAME,Username);
         values.put(MySQLiteHelper.USERS_COL_PASSWORD,Password);
         values.put(MySQLiteHelper.USERS_COL_EMAIL,EmailId);
-        int id;
-        switch (ApproverName){
-            case "Larry Ellison":id=1;break;
-            case "Indra Nooyi":id=2;break;
-            case "Elon Musk":id=3;break;
-            case "Larry Page":id=4;break;
-            case "Sheryl Sandberg":id=5;break;
-            case "Bill Gates":id=6;break;
-            default:id=1;break;
-        }
-        values.put(MySQLiteHelper.USERS_COL_APPROVER,id);
+        values.put(MySQLiteHelper.USERS_COL_APPROVER,ApproverName);
+
         long insertId = database.insert(MySQLiteHelper.USERS_TABLE_NAME,null,values);
         Cursor cursor= database.query(MySQLiteHelper.USERS_TABLE_NAME, allColumns, null,
                 null, null, null, null);
@@ -56,6 +47,8 @@ public class UserDataSource {
         user.setId(cursor.getInt(0));
         user.setUsername(cursor.getString(1));
         user.setPassword(cursor.getString(2));
+        user.setEmail(cursor.getString(3));
+        user.setApprover(cursor.getString(4));
         return user;
     }
 }
