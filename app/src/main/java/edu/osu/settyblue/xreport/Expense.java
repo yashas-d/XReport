@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Expense {
     private int expenseId;
     private String name;
-    private Date date;
+    private String date;
     private int days;
     private String submitStatus;
     private String comments;
@@ -29,11 +29,11 @@ public class Expense {
         this.name = name;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

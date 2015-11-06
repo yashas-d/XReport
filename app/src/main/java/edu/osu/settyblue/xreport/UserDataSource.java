@@ -34,7 +34,7 @@ public class UserDataSource {
         values.put(MySQLiteHelper.USERS_COL_APPROVER,ApproverName);
 
         long insertId = database.insert(MySQLiteHelper.USERS_TABLE_NAME,null,values);
-        Cursor cursor= database.query(MySQLiteHelper.USERS_TABLE_NAME, allColumns, null,
+        Cursor cursor = database.query(MySQLiteHelper.USERS_TABLE_NAME, allColumns, null,
                 null, null, null, null);
         cursor.moveToFirst();
         User newUser = cursorToUser(cursor);
