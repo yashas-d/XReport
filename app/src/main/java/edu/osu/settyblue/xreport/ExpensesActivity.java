@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,7 @@ public class ExpensesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("ExpensesActivity", "onCreate called.");
         setContentView(R.layout.activity_expenses);
         mContext = this;
 
@@ -37,14 +39,15 @@ public class ExpensesActivity extends AppCompatActivity {
         expenseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(mContext, "Clicked item " + position, Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "Clicked item " + position, Toast.LENGTH_LONG).show();
                 Intent editExpenseIntent = new Intent(mContext,EditExpenseActivity.class);
+                editExpenseIntent.putExtra("fromCreate",false);
                 startActivity(editExpenseIntent);
             }
         });
 
         //
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.sort_by_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterSortItems = ArrayAdapter.createFromResource(this,
                 R.array.sort_items_array, android.R.layout.simple_spinner_item);
@@ -55,4 +58,33 @@ public class ExpensesActivity extends AppCompatActivity {
         //
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("ExpensesActivity", "onResume called.");
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.i("ExpensesActivity", "onPause called.");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("ExpensesActivity", "onStop called.");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.i("ExpensesActivity", "onRestart called.");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.i("ExpensesActivity", "onDestroy called.");
+    }
 }

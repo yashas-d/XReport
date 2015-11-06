@@ -7,6 +7,24 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private String email;
+    private String approver;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver;
+    }
 
     public int getId() {
         return id;

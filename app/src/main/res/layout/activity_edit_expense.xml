@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:textSize="40dp"/>
         <ImageButton
-            android:id="@+id/create"
+            android:id="@+id/save_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_plus"
@@ -37,20 +37,40 @@
         android:layout_height="wrap_content"
         android:hint="@string/event_name"/>
     <EditText
-        android:id="@+id/eventdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/event_date"/>
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/expensedate"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/date"/>
+
     <TextView
         android:layout_height="20dp"
         android:layout_width="10dp"
         android:textSize="40dp"/>
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/expense_items"
-        android:textSize="40dp"
-        android:gravity="center_vertical"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expense_items"
+            android:textSize="40dp"
+            android:gravity="center_vertical"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="40dp"/>
+        <ImageButton
+            android:id="@+id/add_expense_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_plus"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
     <ListView
         android:id="@+id/expenseItemsList"
         android:layout_width="match_parent"

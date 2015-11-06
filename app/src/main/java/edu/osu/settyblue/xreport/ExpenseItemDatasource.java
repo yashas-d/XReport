@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ public class ExpenseItemDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
     private String[] allColumns = { MySQLiteHelper.X_ITEMS_COL_ITEM_ID,MySQLiteHelper.X_ITEMS_COL_X_ID,
-            MySQLiteHelper.X_ITEMS_COL_ITEM_NAME};
+            MySQLiteHelper.X_ITEMS_COL_ITEM_NAME,MySQLiteHelper.X_ITEMS_COL_CATEGORY,MySQLiteHelper.X_ITEMS_COL_AMOUNT,
+            MySQLiteHelper.X_ITEMS_COL_CURRENCY,MySQLiteHelper.X_ITEMS_COL_DATE,MySQLiteHelper.X_ITEMS_COL_VENDOR,
+            MySQLiteHelper.X_ITEMS_COL_COMMENTS};
 
     public ExpenseItemDataSource(Context context){
         dbHelper = new MySQLiteHelper(context);
@@ -31,11 +34,17 @@ public class ExpenseItemDataSource {
         dbHelper.close();
     }
 
-    public ExpenseItem createExpenseItem(String ExpenseItemName){
+    public ExpenseItem createExpenseItem(String ExpenseItemName,String Category, float Amount,String Currency,
+                                         String date, String Vendor, String Comments){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.X_ITEMS_COL_X_ID,10);
         values.put(MySQLiteHelper.X_ITEMS_COL_ITEM_NAME, ExpenseItemName);
-
+        values.put(MySQLiteHelper.X_ITEMS_COL_CATEGORY, Category);
+        values.put(MySQLiteHelper.X_ITEMS_COL_AMOUNT, Amount);
+        values.put(MySQLiteHelper.X_ITEMS_COL_CURRENCY, Currency);
+        values.put(MySQLiteHelper.X_ITEMS_COL_DATE,date);
+        values.put(MySQLiteHelper.X_ITEMS_COL_VENDOR, Vendor);
+        values.put(MySQLiteHelper.X_ITEMS_COL_COMMENTS,Comments);
         long insertId = database.insert(MySQLiteHelper.X_ITEMS_TABLE_NAME,null,values);
         Cursor cursor= database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns, null,
                 null, null, null, null);
@@ -67,6 +76,12 @@ public class ExpenseItemDataSource {
         expenseItem.setExpenseItemId(cursor.getInt(0));
         expenseItem.setExpenseId(cursor.getInt(1));
         expenseItem.setItemName(cursor.getString(2));
+        expenseItem.setCategory(cursor.getString(3));
+        expenseItem.setAmount(cursor.getFloat(4));
+        expenseItem.setCurrency(cursor.getString(5));
+        expenseItem.setDate(cursor.getString(6));
+        expenseItem.setVendor(cursor.getString(7));
+        expenseItem.setComments(cursor.getString(8));
         return expenseItem;
     }
 }
