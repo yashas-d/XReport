@@ -60,4 +60,8 @@ public class Expense {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+    public String toString(){
+        return getName()+ " "+getExpenseId();
+    }
 }

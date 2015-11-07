@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rakshith on 11/4/2015.
  */
@@ -37,7 +40,7 @@ public class ExpenseDataSource {
 
         long insertId = database.insert(MySQLiteHelper.X_TABLE_NAME,null,values);
         Cursor cursor = database.query(MySQLiteHelper.X_TABLE_NAME, allColumns, null,
-                null, null, null, null);
+                null,null,null,MySQLiteHelper.X_COL_EXPENSE_ID+" desc");
         cursor.moveToFirst();
         Expense newExpense = cursorToExpense(cursor);
         cursor.close();
@@ -58,6 +61,30 @@ public class ExpenseDataSource {
         Expense newExpense = cursorToExpense(cursor);
         cursor.close();
         return newExpense;
+    }
+
+    public List<Expense> getAllExpenses() {
+        List<Expense> expenses = new ArrayList<Expense>();
+        Cursor cursor = database.query(MySQLiteHelper.X_TABLE_NAME, allColumns, null,
+                null, null, null, null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            Expense expense = cursorToExpense(cursor);
+            expenses.add(expense);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return expenses;
+    }
+
+    public Expense queryExpense(int ExpenseId) {
+        Expense expense = new Expense();
+        Cursor cursor = database.query(MySQLiteHelper.X_TABLE_NAME, allColumns, MySQLiteHelper.X_COL_EXPENSE_ID+" = "+ExpenseId,
+                null, null, null, null);
+        cursor.moveToFirst();
+        expense = cursorToExpense(cursor);
+        cursor.close();
+        return expense;
     }
 
     public Expense cursorToExpense(Cursor cursor){

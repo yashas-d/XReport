@@ -30,7 +30,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         final int expenseId = getIntent().getIntExtra("expenseId", 1);
         final int expenseItemId = getIntent().getIntExtra("expenseItemId", 1);
         boolean fromCreate = getIntent().getBooleanExtra("fromCreate", false);
-        Toast.makeText(mContext, "created an expense with id : " + expenseId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "created an expense with id : " + expenseId, Toast.LENGTH_LONG).show();
         datasource = new ExpenseItemDataSource(this);
         datasource.open();
         //
