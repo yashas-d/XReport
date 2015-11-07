@@ -2,6 +2,7 @@ package edu.osu.settyblue.xreport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -125,7 +126,26 @@ public class EditExpenseActivity extends AppCompatActivity {
         //total amount field.
         float totalExpenseAmount = expenseitemdatasource.getTotalExpenseAmount(xid);
         TextView totalAmountText = (TextView)findViewById(R.id.total_amount_text);
-        totalAmountText.setText(getResources().getString(R.string.total_expense_amount)+" "+Float.toString(totalExpenseAmount));
+        totalAmountText.setText(getResources().getString(R.string.total_expense_amount) + " " + Float.toString(totalExpenseAmount));
+
+        //expense report button.
+        reportExpenseButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //
+                EditText expenseEventName = (EditText) findViewById(R.id.eventname);
+                //get the message body ready.
+                StringBuffer messageBody = new StringBuffer();
+                messageBody.append(expenseEventName.getText().toString()+'\n');
+                messageBody.append("hello World");
+                //
+                // Code below to send email.
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "settyblue@gmail.com", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Submitting Expense Report For "+expenseEventName.getText().toString());
+                emailIntent.putExtra(Intent.EXTRA_TEXT, messageBody.toString());
+                startActivity(Intent.createChooser(emailIntent, "Send email..."));
+            }
+        });
         //==========
     }
 
