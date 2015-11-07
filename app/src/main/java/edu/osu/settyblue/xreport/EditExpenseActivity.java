@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +22,13 @@ public class EditExpenseActivity extends AppCompatActivity {
     private static final String TAG = "EditExpenseActivity";
     EditExpenseActivity mContext;
     private ExpenseItemDataSource datasource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        boolean fromCreate = getIntent().getBooleanExtra("fromCreate",false);
+        Toast.makeText(mContext, "coming from on create " + fromCreate, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_edit_expense);
         ListView expenseItemsList;
         expenseItemsList = (ListView) findViewById(R.id.expenseItemsList);

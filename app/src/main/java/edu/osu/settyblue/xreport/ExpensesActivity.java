@@ -39,8 +39,9 @@ public class ExpensesActivity extends AppCompatActivity {
         expenseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(mContext, "Clicked item " + position, Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "Clicked item " + position, Toast.LENGTH_LONG).show();
                 Intent editExpenseIntent = new Intent(mContext,EditExpenseActivity.class);
+                editExpenseIntent.putExtra("fromCreate",false);
                 startActivity(editExpenseIntent);
             }
         });

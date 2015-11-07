@@ -11,7 +11,7 @@ import android.util.Log;
 public class MySQLiteHelper extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "myschema.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 8;
 
     public static final String X_TABLE_NAME = "expense";
     public static final String X_COL_EXPENSE_ID = "expense_id";
@@ -52,7 +52,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     private static final String USERS_TABLE_CREATE = "create table " + USERS_TABLE_NAME
             + "(" + USERS_COL_ID + " integer primary key autoincrement, " + USERS_COL_USERNAME
             + " text unique not null, " + USERS_COL_PASSWORD + " text not null, " + USERS_COL_EMAIL
-            + " text unique not null, " + USERS_COL_APPROVER + " integer);";
+            + " text unique not null, " + USERS_COL_APPROVER + " text);";
     private static final String X_ITEMS_TABLE_CREATE = "create table " + X_ITEMS_TABLE_NAME
             + "(" + X_ITEMS_COL_ITEM_ID + " integer primary key autoincrement, " + X_ITEMS_COL_X_ID
             + " integer not null, " + X_ITEMS_COL_ITEM_NAME + " text not null, " + X_ITEMS_COL_CATEGORY
@@ -62,7 +62,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     private static final String EXPENSE_TABLE_CREATE = "create table " + X_TABLE_NAME
             + "(" + X_COL_EXPENSE_ID + " integer primary key autoincrement, " + X_COL_EVENT_NAME
             + " text, " + X_COL_DATE + " date, " + X_COL_DAYS + " integer, " + X_COL_SUBMITSTATUS
-            + " integer, " + X_COL_COMMENTS + " text);";
+            + " text, " + X_COL_COMMENTS + " text);";
     private static final String REPORTS_TABLE_CREATE = "create table " + REPORTS_TABLE_NAME
             + "(" + REPORTS_COL_ID + " integer primary key autoincrement, " + REPORTS_COL_REPORTED_BY
             + " integer, " + REPORTS_COL_REPORTED_TO + " integer, " + REPORTS_COL_APPROVAL_STATUS
@@ -90,8 +90,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("DROP TABLE IF EXISTS "+ X_ITEMS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS "+ USERS_TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS "+ EXPENSE_TABLE_CREATE);
-        db.execSQL("DROP TABLE IF EXISTS "+ REPORTS_TABLE_CREATE);
+        db.execSQL("DROP TABLE IF EXISTS "+ X_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+ REPORTS_TABLE_NAME);
         onCreate(db);
     }
 }
