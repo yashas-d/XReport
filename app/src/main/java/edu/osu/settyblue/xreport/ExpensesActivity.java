@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -18,13 +21,29 @@ import java.util.List;
 public class ExpensesActivity extends AppCompatActivity {
     Context mContext;
     ListView expenseList;
+    private ExpenseDataSource expensedatasource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("ExpensesActivity", "onCreate called.");
         setContentView(R.layout.activity_expenses);
         mContext = this;
-
+        expensedatasource = new ExpenseDataSource(this);
+        expensedatasource.open();
+        //Adding an expense button.
+        final ImageButton createExpenseButton = (ImageButton) findViewById(R.id.add_expense_button);
+        createExpenseButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //
+                Intent editExpenseIntent = new Intent(mContext,EditExpenseActivity.class);
+                editExpenseIntent.putExtra("fromCreate",true);
+                startActivity(editExpenseIntent);
+            }
+        });
+        //
+        
+        //
+        //
         expenseList = (ListView) findViewById(R.id.expenseList);
         List<String> list = new ArrayList<>();
         list.add("HiPC Conference at California");

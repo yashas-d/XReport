@@ -34,10 +34,10 @@ public class ExpenseItemDataSource {
         dbHelper.close();
     }
 
-    public ExpenseItem createExpenseItem(String ExpenseItemName,String Category, float Amount,String Currency,
+    public ExpenseItem createExpenseItem(int ExpenseId, String ExpenseItemName,String Category, float Amount,String Currency,
                                          String date, String Vendor, String Comments){
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.X_ITEMS_COL_X_ID,10);
+        values.put(MySQLiteHelper.X_ITEMS_COL_X_ID,ExpenseId);
         values.put(MySQLiteHelper.X_ITEMS_COL_ITEM_NAME, ExpenseItemName);
         values.put(MySQLiteHelper.X_ITEMS_COL_CATEGORY, Category);
         values.put(MySQLiteHelper.X_ITEMS_COL_AMOUNT, Amount);
@@ -48,6 +48,20 @@ public class ExpenseItemDataSource {
         long insertId = database.insert(MySQLiteHelper.X_ITEMS_TABLE_NAME,null,values);
         Cursor cursor= database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns, null,
                 null, null, null, null);
+        cursor.moveToFirst();
+        ExpenseItem newExpenseItem = cursorToExpenseItem(cursor);
+        cursor.close();
+        return newExpenseItem;
+    }
+
+    public ExpenseItem queryExpenseItem(int ExpenseId, int ExpenseItemId){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.X_ITEMS_COL_X_ID,ExpenseId);
+        values.put(MySQLiteHelper.X_ITEMS_COL_ITEM_ID,ExpenseItemId);
+
+        Cursor cursor= database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns,
+                MySQLiteHelper.X_ITEMS_COL_X_ID+" = "+ExpenseId+" AND "+ MySQLiteHelper.X_ITEMS_COL_ITEM_ID+" = "+ExpenseItemId,
+                null,null,null,null);
         cursor.moveToFirst();
         ExpenseItem newExpenseItem = cursorToExpenseItem(cursor);
         cursor.close();

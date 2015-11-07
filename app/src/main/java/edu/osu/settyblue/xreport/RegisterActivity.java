@@ -28,8 +28,8 @@ public class RegisterActivity extends AppCompatActivity {
         datasource = new UserDataSource(this);
         datasource.open();
         //references to button.
-        final Button button = (Button) findViewById(R.id.confirm_register_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button registerButton = (Button) findViewById(R.id.confirm_register_button);
+        registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click.
                 EditText username = (EditText)findViewById(R.id.register_username);

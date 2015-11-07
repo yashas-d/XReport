@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,8 +22,8 @@ import java.util.List;
 public class EditExpenseActivity extends AppCompatActivity {
     private static final String TAG = "EditExpenseActivity";
     EditExpenseActivity mContext;
-    private ExpenseItemDataSource datasource;
-
+    private ExpenseItemDataSource expenseitemdatasource;
+    private ExpenseDataSource expensedatasource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,16 +40,22 @@ public class EditExpenseActivity extends AppCompatActivity {
         list.add("Lunch");
 
         //
-        datasource = new ExpenseItemDataSource(this);
-        datasource.open();
-        datasource.deleteAllExpenseItems();
+        expensedatasource = new ExpenseDataSource(this);
+        expensedatasource.open();
+        expenseitemdatasource = new ExpenseItemDataSource(this);
+        expenseitemdatasource.open();
+        //datasource.deleteAllExpenseItems();
 
         //datasource.createExpenseItem("Hotel Stay");
         //datasource.createExpenseItem("Lunch");
         //datasource.createExpenseItem("Travel");
         //datasource.createExpenseItem("Dinner");
 
-        List<ExpenseItem> values = datasource.getAllExpenseItems();
+        //
+        Expense newExpense = expensedatasource.createExpense("dummy","dummy",10,"dummy","dummy");
+        final int expenseId = newExpense.getExpenseId();
+        //
+        List<ExpenseItem> values = expenseitemdatasource.getAllExpenseItems();
         for(int i = 0; i < values.size(); i++){
             Log.i(TAG, values.get(i).toString());
         }
@@ -57,6 +64,17 @@ public class EditExpenseActivity extends AppCompatActivity {
         final ArrayAdapter adapterExpense = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, values); //list,values
         expenseItemsList.setAdapter(adapterExpense);
+        expenseItemsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(mContext, "Clicked item " + position, Toast.LENGTH_LONG).show();
+                Intent editExpenseItemIntent = new Intent(mContext, EditExpenseItemActivity.class);
+                editExpenseItemIntent.putExtra("fromCreate", false);
+                editExpenseItemIntent.putExtra("expenseId",expenseId);
+                editExpenseItemIntent.putExtra("expenseItemId",position+1);
+                startActivity(editExpenseItemIntent);
+            }
+        });
 
         //references to button.
         final ImageButton addbutton = (ImageButton) findViewById(R.id.add_expense_item);
@@ -64,6 +82,8 @@ public class EditExpenseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
                 Intent editExpenseItemIntent = new Intent(mContext, EditExpenseItemActivity.class);
+                editExpenseItemIntent.putExtra("fromCreate", true);
+                editExpenseItemIntent.putExtra("expenseId",expenseId);
                 startActivity(editExpenseItemIntent);
             }
         });
@@ -77,6 +97,10 @@ public class EditExpenseActivity extends AppCompatActivity {
             }
         });
         //
+
+        if(fromCreate){
+
+        }
     }
 
 }
