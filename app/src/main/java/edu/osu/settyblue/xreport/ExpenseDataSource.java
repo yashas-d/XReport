@@ -44,6 +44,22 @@ public class ExpenseDataSource {
         return newExpense;
     }
 
+    public Expense updateExpense(int ExpenseId, String EventName, String date, int days, String SubmitStatus, String Comments){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.X_COL_EVENT_NAME,EventName);
+        values.put(MySQLiteHelper.X_COL_DATE,date);
+        values.put(MySQLiteHelper.X_COL_DAYS,days);
+        values.put(MySQLiteHelper.X_COL_SUBMITSTATUS,SubmitStatus);
+        values.put(MySQLiteHelper.X_COL_COMMENTS,Comments);
+        database.update(MySQLiteHelper.X_TABLE_NAME, values, MySQLiteHelper.X_COL_EXPENSE_ID + " = " + ExpenseId, null);
+        Cursor cursor = database.query(MySQLiteHelper.X_TABLE_NAME, allColumns, null,
+                null, null, null, null);
+        cursor.moveToFirst();
+        Expense newExpense = cursorToExpense(cursor);
+        cursor.close();
+        return newExpense;
+    }
+
     public Expense cursorToExpense(Cursor cursor){
         Expense newExpense = new Expense();
         newExpense.setExpenseId(cursor.getInt(0));

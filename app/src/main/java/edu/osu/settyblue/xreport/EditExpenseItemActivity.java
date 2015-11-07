@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,30 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_expense_item);
         mContext = this;
+        final int expenseId = getIntent().getIntExtra("expenseId", 1);
+        final int expenseItemId = getIntent().getIntExtra("expenseItemId", 1);
+        boolean fromCreate = getIntent().getBooleanExtra("fromCreate", false);
+        Toast.makeText(mContext, "created an expense with id : " + expenseId, Toast.LENGTH_LONG).show();
         datasource = new ExpenseItemDataSource(this);
         datasource.open();
+        //
+        if(!fromCreate){
+            EditText expenseItemName = (EditText)findViewById(R.id.expenseItemName);
+            Spinner categorySpinner=(Spinner) findViewById(R.id.category_spinner);
+            EditText expenseItemAmount = (EditText)findViewById(R.id.expenseItemAmount);
+            Spinner currencySpinner=(Spinner) findViewById(R.id.currency_spinner);
+            EditText expenseItemDate = (EditText)findViewById(R.id.expenseItemDate);
+            EditText expenseItemVendor = (EditText)findViewById(R.id.expenseItemVendor);
+            EditText expenseItemComments = (EditText)findViewById(R.id.expenseItemComments);
+            ExpenseItem  currentExpenseItem = datasource.queryExpenseItem(expenseId,expenseItemId);
+            expenseItemName.setText(currentExpenseItem.getItemName());
+            categorySpinner.setSelection(2);
+            expenseItemAmount.setText(Float.toString(currentExpenseItem.getAmount()));
+            currencySpinner.setSelection(0);
+            expenseItemDate.setText(currentExpenseItem.getDate());
+            expenseItemVendor.setText(currentExpenseItem.getVendor());
+            expenseItemComments.setText(currentExpenseItem.getComments());
+        }
         //
         Spinner spinner = (Spinner) findViewById(R.id.category_spinner);
         ArrayAdapter<CharSequence> adapterSortItems = ArrayAdapter.createFromResource(this,
@@ -55,7 +78,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                 EditText expenseItemVendor = (EditText)findViewById(R.id.expenseItemVendor);
                 EditText expenseItemComments = (EditText)findViewById(R.id.expenseItemComments);
 
-                datasource.createExpenseItem(expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
+                datasource.createExpenseItem(expenseId,expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
                         Float.parseFloat(expenseItemAmount.getText().toString()),currencySpinner.getSelectedItem().toString(),
                         expenseItemDate.getText().toString(),expenseItemVendor.getText().toString(), expenseItemComments.getText().toString());
                 mContext.finish();
