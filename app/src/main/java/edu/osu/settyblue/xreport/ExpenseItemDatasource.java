@@ -82,6 +82,34 @@ public class ExpenseItemDataSource {
         return expenseItems;
     }
 
+    public List<ExpenseItem> getExpenseItems(int ExpenseId){
+        List<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
+        Cursor cursor = database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns,
+                MySQLiteHelper.X_ITEMS_COL_X_ID+" = "+ExpenseId,null, null, null,MySQLiteHelper.X_ITEMS_COL_DATE);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            ExpenseItem expenseItem = cursorToExpenseItem(cursor);
+            expenseItems.add(expenseItem);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return expenseItems;
+    }
+
+
+    public float getTotalExpenseAmount(int ExpenseId){
+        float totalAmount = 0;
+        Cursor cursor = database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns,
+                MySQLiteHelper.X_ITEMS_COL_X_ID+" = "+ExpenseId,null, null, null,MySQLiteHelper.X_ITEMS_COL_DATE);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            ExpenseItem expenseItem = cursorToExpenseItem(cursor);
+            totalAmount += expenseItem.getAmount();
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return totalAmount;
+    }
     public void deleteAllExpenseItems(){
         database.execSQL("delete from "+MySQLiteHelper.X_ITEMS_TABLE_NAME);
     }

@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,39 +31,52 @@ public class EditExpenseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        boolean fromCreate = getIntent().getBooleanExtra("fromCreate",false);
-        Toast.makeText(mContext, "coming from on create " + fromCreate, Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "coming from on create " + fromCreate, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_edit_expense);
-        ListView expenseItemsList;
-        expenseItemsList = (ListView) findViewById(R.id.expenseItemsList);
-        List<String> list = new ArrayList<>();
-        list.add("Hotel Stay");
-        list.add("Travel");
-        list.add("Breakfast");
-        list.add("Lunch");
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("ExpenseActivity", "onResume called.");
+
+        //==========
+        final boolean fromCreate = getIntent().getBooleanExtra("fromCreate", false);
+        ListView expenseItemsList;
+        int currentExpenseId = getIntent().getIntExtra("expenseId", 0);
+        int expenseId = -1;
+        expenseItemsList = (ListView) findViewById(R.id.expenseItemsList);
         //
         expensedatasource = new ExpenseDataSource(this);
         expensedatasource.open();
         expenseitemdatasource = new ExpenseItemDataSource(this);
         expenseitemdatasource.open();
-        //datasource.deleteAllExpenseItems();
-
-        //datasource.createExpenseItem("Hotel Stay");
-        //datasource.createExpenseItem("Lunch");
-        //datasource.createExpenseItem("Travel");
-        //datasource.createExpenseItem("Dinner");
-
         //
-        Expense newExpense = expensedatasource.createExpense("dummy","dummy",10,"dummy","dummy");
-        final int expenseId = newExpense.getExpenseId();
+        EditText expenseEventName = (EditText)findViewById(R.id.eventname);
+        EditText expenseDate = (EditText)findViewById(R.id.expensedate);
+        Button reportExpenseButton = (Button)findViewById(R.id.report_expense_button);
+
+        if(!fromCreate){
+            Expense expense = expensedatasource.queryExpense(currentExpenseId);
+            expenseEventName.setText(expense.getName());
+            expenseDate.setText(expense.getDate());
+            if(expense.getSubmitStatus().equals("Submitted")){
+                reportExpenseButton.setVisibility(View.INVISIBLE);
+            }
+        }
+        else {
+            Expense newExpense = expensedatasource.createExpense("dummy", "dummy", 10,"not submitted", "dummy");
+            expenseId = newExpense.getExpenseId();
+        }
+        final int xid = Math.max(expenseId, currentExpenseId);
         //
-        List<ExpenseItem> values = expenseitemdatasource.getAllExpenseItems();
+
+        //List<ExpenseItem> values = expenseitemdatasource.getAllExpenseItems();
+        final List<ExpenseItem> values = expenseitemdatasource.getExpenseItems(xid);
         for(int i = 0; i < values.size(); i++){
             Log.i(TAG, values.get(i).toString());
         }
         //
-        //ExpenseAdapter adapter/Expense = new ExpenseAdapter(this,list);
         final ArrayAdapter adapterExpense = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, values); //list,values
         expenseItemsList.setAdapter(adapterExpense);
@@ -70,9 +86,27 @@ public class EditExpenseActivity extends AppCompatActivity {
                 //Toast.makeText(mContext, "Clicked item " + position, Toast.LENGTH_LONG).show();
                 Intent editExpenseItemIntent = new Intent(mContext, EditExpenseItemActivity.class);
                 editExpenseItemIntent.putExtra("fromCreate", false);
-                editExpenseItemIntent.putExtra("expenseId",expenseId);
-                editExpenseItemIntent.putExtra("expenseItemId",position+1);
+                editExpenseItemIntent.putExtra("expenseId", xid);
+                //parent.getAdapter().getItem(position);
+                //expenseItemsList.getItemAtPosition(position);
+
+                editExpenseItemIntent.putExtra("expenseItemId",values.get(position).getExpenseItemId());
                 startActivity(editExpenseItemIntent);
+            }
+        });
+
+        //references to button.
+        final ImageButton savebutton = (ImageButton) findViewById(R.id.save_expense);
+        savebutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                EditText expenseEventName = (EditText) findViewById(R.id.eventname);
+                EditText expenseDate = (EditText) findViewById(R.id.expensedate);
+                EditText expenseComments = (EditText) findViewById(R.id.expense_comments);
+
+                expensedatasource.updateExpense(xid, expenseEventName.getText().toString(), expenseDate.getText().toString(), 10,
+                        "not submitted", expenseComments.getText().toString());
+                mContext.finish();
             }
         });
 
@@ -83,24 +117,39 @@ public class EditExpenseActivity extends AppCompatActivity {
                 // Perform action on click
                 Intent editExpenseItemIntent = new Intent(mContext, EditExpenseItemActivity.class);
                 editExpenseItemIntent.putExtra("fromCreate", true);
-                editExpenseItemIntent.putExtra("expenseId",expenseId);
+                editExpenseItemIntent.putExtra("expenseId", xid);
                 startActivity(editExpenseItemIntent);
             }
         });
 
-        //references to button.
-        final ImageButton savebutton = (ImageButton) findViewById(R.id.save_expense);
-        savebutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                mContext.finish();
-            }
-        });
-        //
-
-        if(fromCreate){
-
-        }
+        //total amount field.
+        float totalExpenseAmount = expenseitemdatasource.getTotalExpenseAmount(xid);
+        TextView totalAmountText = (TextView)findViewById(R.id.total_amount_text);
+        totalAmountText.setText(getResources().getString(R.string.total_expense_amount)+" "+Float.toString(totalExpenseAmount));
+        //==========
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.i("ExpenseActivity", "onPause called.");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("ExpenseActivity", "onStop called.");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.i("ExpenseActivity", "onRestart called.");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.i("ExpenseActivity", "onDestroy called.");
+    }
 }

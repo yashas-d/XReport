@@ -89,6 +89,6 @@ public class ExpenseItem {
     }
 
     public String toString(){
-        return expenseItemId+" " + itemName + " ";
+        return expenseItemId+" " + itemName + " "+amount;
     }
 }
