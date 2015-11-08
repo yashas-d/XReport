@@ -71,10 +71,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/expenseItemComments"
         android:hint="@string/comments"/>
+    <ImageButton
+        android:id="@+id/camera_snapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_camera"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
         android:id="@+id/save_expense_item"
         android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal" /></LinearLayout>
