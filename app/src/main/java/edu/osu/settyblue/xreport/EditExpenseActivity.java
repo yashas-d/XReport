@@ -2,29 +2,55 @@ package edu.osu.settyblue.xreport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditExpenseActivity extends AppCompatActivity {
     private static final String TAG = "EditExpenseActivity";
+    private static String FILE = "c:/Users/raksh/Downloads/merged.pdf";
+
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
+            Font.BOLD);
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.NORMAL, BaseColor.RED);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.BOLD);
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.BOLD);
     EditExpenseActivity mContext;
     private ExpenseItemDataSource expenseitemdatasource;
     private ExpenseDataSource expensedatasource;
@@ -129,6 +155,7 @@ public class EditExpenseActivity extends AppCompatActivity {
         totalAmountText.setText(getResources().getString(R.string.total_expense_amount) + " " + Float.toString(totalExpenseAmount));
 
         //expense report button.
+
         reportExpenseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
@@ -137,13 +164,60 @@ public class EditExpenseActivity extends AppCompatActivity {
                 StringBuffer messageBody = new StringBuffer();
                 messageBody.append(expenseEventName.getText().toString()+'\n');
                 messageBody.append("hello World");
-                //
+                //TODO
                 // Code below to send email.
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "settyblue@gmail.com", null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Submitting Expense Report For "+expenseEventName.getText().toString());
                 emailIntent.putExtra(Intent.EXTRA_TEXT, messageBody.toString());
+
+                /*create a pdf document here.
+                PdfDocument report = new PdfDocument();
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(new Rect(0, 0, 100, 100), 1).create();
+                //start a page.
+                PdfDocument.Page page = report.startPage(pageInfo);
+                // draw something on the page
+                ViewGroup view = (ViewGroup)getWindow().getDecorView();
+                LinearLayout content = (LinearLayout)view.getChildAt(0);
+                //View content = getContentView();
+                content.draw(page.getCanvas());
+
+                */
+
+                try{
+                    //
+                    File sdDir = Environment
+                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    File reportsFileDir = new File(sdDir, "Reports");
+                    //File reportsFile = new File(sdDir, "expense_report.pdf");
+                    String filename = reportsFileDir.getPath() + File.separator + "expense_report.pdf";
+                    File reportsFile = new File(filename);
+                    //
+                    Document report = new Document();
+                    PdfWriter.getInstance(report, new FileOutputStream(reportsFile));//reportsFile
+                    report.open();
+                    report.addAuthor("Rakshith Kunchum");
+                    addTitlePage(report);
+                    //addContent(report);
+                    report.close();
+                    Uri uri = Uri.fromFile(reportsFile);
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    //
+                    //
+                }
+
+
+                //addMetaData(report);
+                //addTitlePage(report);
+                //addContent(report);
+
+                //finish creating a pdf document.
+
+                //send email...
                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
+
             }
         });
         //==========
@@ -171,5 +245,37 @@ public class EditExpenseActivity extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
         Log.i("ExpenseActivity", "onDestroy called.");
+    }
+
+    ///
+    private static void addTitlePage(Document document)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 1);
+        // Lets write a big header
+        preface.add(new Paragraph("Title of the document", catFont));
+
+        addEmptyLine(preface, 1);
+        // Will create: Report generated by: _name, _date
+        preface.add(new Paragraph("Report generated by: " + System.getProperty("user.name") + ", " , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                smallBold));
+        addEmptyLine(preface, 3);
+        preface.add(new Paragraph("This document describes something which is very important ",
+                smallBold));
+
+        addEmptyLine(preface, 8);
+
+        preface.add(new Paragraph("This document is a preliminary version and not subject to your license agreement or any other agreement with vogella.com ;-).",
+                redFont));
+
+        document.add(preface);
+        // Start a new page
+        document.newPage();
+    }
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
 }

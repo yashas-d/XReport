@@ -36,6 +36,8 @@
     <string name="expense_report_submitted">Report Submitted</string>
     <string name="total_expense_amount">Total Expense Amount :</string>
     <string name="hello">Hello</string>
+    <string name="title_activity_make_photo">Click Photo</string>
+    <string name="title_activity_image_pick">title_activity_image_pick</string>
     <string-array name="sort_items_array">
         <item>Name</item>
         <item>Date</item>
