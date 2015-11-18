@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.osu.settyblue.xreport" >
 
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+	
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -59,6 +63,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.osu.settyblue.xreport.EditExpenseActivity" />
+        </activity>
+		<activity
+            android:name=".MakePhotoActivity"
+            android:label="@string/title_activity_make_photo" >
+        </activity>
+        <activity
+            android:name=".ImagePickActivity"
+            android:label="@string/title_activity_image_pick" >
         </activity>
     </application>
 
