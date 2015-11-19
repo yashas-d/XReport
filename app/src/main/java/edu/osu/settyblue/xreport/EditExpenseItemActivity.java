@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 /*import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;*/
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +26,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -107,6 +114,61 @@ public class EditExpenseItemActivity extends AppCompatActivity {
             }
         });
         //
+        final ImageButton gpsbutton = (ImageButton) findViewById(R.id.gps_button);
+        gpsbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+                boolean enabled = service
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                // check if enabled and if not send user to the GSP settings
+                // Better solution would be to display a dialog and suggesting to
+                // go to the settings
+                if (!enabled) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+
+                int lat=0;
+                int lng=0;
+
+                try {
+                    LocationManager locationManager;
+                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    String provider;
+                    Criteria criteria = new Criteria();
+                    provider = locationManager.getBestProvider(criteria, false);
+
+                    Location location = locationManager.getLastKnownLocation(provider);
+                    // Initialize the location fields
+                    if (location != null) {
+                        System.out.println("Provider " + provider + " has been selected.");
+                         lat = (int) (location.getLatitude());
+                         lng = (int) (location.getLongitude());
+
+                    } else {
+
+                    }
+                }catch (SecurityException se)
+                {
+
+                }finally {
+                    System.out.println("Lat = "+lat+" Long = "+lng);
+                }
+
+                //Save lat and lng to database
+
+                //startActivity(new Intent(mContext, ShowLocationActivity.class));
+
+
+                //Call to get the map activity
+                //startActivity(new Intent(mContext, MapsActivity.class));
+
+
+
+                //mContext.finish();
+            }
+        });
     }
 
     @Override
