@@ -11,7 +11,7 @@ import android.util.Log;
 public class MySQLiteHelper extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "myschema.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     public static final String X_TABLE_NAME = "expense";
     public static final String X_COL_EXPENSE_ID = "expense_id";
@@ -44,8 +44,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 
     public static final String REPORTS_TABLE_NAME = "reports";
     public static final String REPORTS_COL_ID = "id";
-    public static final String REPORTS_COL_REPORTED_BY = "reporter_id";
-    public static final String REPORTS_COL_REPORTED_TO = "receiver_id";
+    public static final String REPORTS_COL_X_ID = "expense_id";
+    public static final String REPORTS_COL_REPORTED_BY = "reporter";
+    public static final String REPORTS_COL_REPORTED_TO = "receiver";
     public static final String REPORTS_COL_APPROVAL_STATUS = "approval_status";
     public static final String REPORTS_COL_COMMENTS = "comments";
     public static final String REPORTS_COL_REPORTED_DATE = "date";
@@ -67,9 +68,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
             + " text, " + X_COL_DATE + " date, " + X_COL_DAYS + " integer, " + X_COL_SUBMITSTATUS
             + " text, " + X_COL_COMMENTS + " text);";
     private static final String REPORTS_TABLE_CREATE = "create table " + REPORTS_TABLE_NAME
-            + "(" + REPORTS_COL_ID + " integer primary key autoincrement, " + REPORTS_COL_REPORTED_BY
-            + " integer, " + REPORTS_COL_REPORTED_TO + " integer, " + REPORTS_COL_APPROVAL_STATUS
-            + " integer, " + REPORTS_COL_COMMENTS + " text, " + REPORTS_COL_REPORTED_DATE
+            + "(" + REPORTS_COL_ID + " integer primary key autoincrement, " + REPORTS_COL_X_ID + " integer, "+ REPORTS_COL_REPORTED_BY
+            + " text, " + REPORTS_COL_REPORTED_TO + " text, " + REPORTS_COL_APPROVAL_STATUS
+            + " text, " + REPORTS_COL_COMMENTS + " text, " + REPORTS_COL_REPORTED_DATE
             + " date, " + REPORTS_COL_PDF + " blob);";
 
     public MySQLiteHelper(Context context){

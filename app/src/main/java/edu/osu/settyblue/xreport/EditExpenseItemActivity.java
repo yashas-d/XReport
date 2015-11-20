@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
     EditExpenseItemActivity mContext;
     private ExpenseItemDataSource datasource;
     String finalfilename = null;
+    ImageView myImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,11 +108,14 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         camerabutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                startActivityForResult(new Intent(mContext, MakePhotoActivity.class),0);
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
+                //startActivityForResult(new Intent(mContext, MakePhotoActivity.class),0);
                 //mContext.finish();
             }
         });
         //
+
         //reference to gps location button.
         final ImageButton gpsbutton = (ImageButton) findViewById(R.id.gps_button);
         gpsbutton.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +176,39 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         });
     }
 
+    //testing start
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Bitmap bp = (Bitmap) data.getExtras().get("data");
+        myImage = (ImageView) findViewById(R.id.imageView);
+        myImage.setImageBitmap(bp);
+
+        File pictureFileDir = getDir();
+        String photoFile = "Picture_Taken" + ".jpg";
+        String filename = pictureFileDir.getPath() + File.separator + photoFile;
+        File pictureFile = new File(filename);
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bp.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            fos.write(bytes.toByteArray());
+            fos.flush();
+            fos.close();
+            Toast.makeText(mContext, "New Image saved:" + photoFile,
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception error) {
+            Log.d(MakePhotoActivity.DEBUG_TAG, "File" + filename + "not saved: "
+                    + error.getMessage());
+            Toast.makeText(mContext, "Image could not be saved.",
+                    Toast.LENGTH_LONG).show();
+        }
+        //onResumeModified(filename);
+    }
+    //testing end
+
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         File pictureFileDir = getDir();
@@ -178,13 +216,13 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         String filename = pictureFileDir.getPath() + File.separator + photoFile;
         onResumeModified(filename);
     }
-
+    */
     public void onResumeModified(String filename){
         Log.i("EditExpenseItemActivity", "onResume modified called.");
         File imgFile = new File(filename);
         if(imgFile.exists()){
             Uri uri = Uri.fromFile(imgFile);
-            ImageView myImage = (ImageView) findViewById(R.id.imageView);
+            myImage = (ImageView) findViewById(R.id.imageView);
             myImage.setImageURI(uri);
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");

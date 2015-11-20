@@ -54,6 +54,7 @@ public class EditExpenseActivity extends AppCompatActivity {
     EditExpenseActivity mContext;
     private ExpenseItemDataSource expenseitemdatasource;
     private ExpenseDataSource expensedatasource;
+    private ReportDataSource reportdatasource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +79,8 @@ public class EditExpenseActivity extends AppCompatActivity {
         expensedatasource.open();
         expenseitemdatasource = new ExpenseItemDataSource(this);
         expenseitemdatasource.open();
+        reportdatasource = new ReportDataSource(this);
+        reportdatasource.open();
         //
         EditText expenseEventName = (EditText)findViewById(R.id.eventname);
         EditText expenseDate = (EditText)findViewById(R.id.expensedate);
@@ -92,7 +95,7 @@ public class EditExpenseActivity extends AppCompatActivity {
             }
         }
         else {
-            Expense newExpense = expensedatasource.createExpense("dummy", "dummy", 10,"not submitted", "dummy");
+            Expense newExpense = expensedatasource.createExpense("dummy", "dummy", 10,"Not Submitted", "dummy");
             expenseId = newExpense.getExpenseId();
         }
         final int xid = Math.max(expenseId, currentExpenseId);
@@ -158,6 +161,9 @@ public class EditExpenseActivity extends AppCompatActivity {
 
         reportExpenseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //
+                //write code to add it on reports table.
+                reportdatasource.createReport(xid,"Rakshith","Larry Elison","No","","11/21/2015","file path");
                 //
                 EditText expenseEventName = (EditText) findViewById(R.id.eventname);
                 //get the message body ready.
