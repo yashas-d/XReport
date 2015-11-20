@@ -31,7 +31,7 @@ public class ReportDataSource {
 
     public Report createReport(int ExpenseId, String ReportedBy, String ReportedTo, String ApprovalStatus, String Comments, String date, String pdfLocation){
 
-        Report newReport =  new Report();
+        Report Report =  new Report();
         Cursor cursor1 = database.query(MySQLiteHelper.REPORTS_TABLE_NAME, allColumns,
                 MySQLiteHelper.REPORTS_COL_X_ID + " = " + ExpenseId+ " AND "+MySQLiteHelper.REPORTS_COL_REPORTED_BY+" = \""+ReportedBy+"\"",
                 null, null, null,MySQLiteHelper.REPORTS_COL_REPORTED_DATE);
@@ -48,10 +48,25 @@ public class ReportDataSource {
             Cursor cursor= database.query(MySQLiteHelper.REPORTS_TABLE_NAME, allColumns, null,
                     null, null, null, null);
             cursor.moveToFirst();
-            newReport = cursorToReport(cursor);
+            Report = cursorToReport(cursor);
+            cursor.close();
+        }else{
+            ContentValues values = new ContentValues();
+            values.put(MySQLiteHelper.REPORTS_COL_REPORTED_BY,ReportedBy);
+            values.put(MySQLiteHelper.REPORTS_COL_REPORTED_TO,ReportedTo);
+            values.put(MySQLiteHelper.REPORTS_COL_APPROVAL_STATUS, ApprovalStatus);
+            values.put(MySQLiteHelper.REPORTS_COL_COMMENTS,Comments);
+            values.put(MySQLiteHelper.REPORTS_COL_REPORTED_DATE, date);
+            values.put(MySQLiteHelper.REPORTS_COL_PDF,pdfLocation);
+            database.update(MySQLiteHelper.REPORTS_TABLE_NAME, values, MySQLiteHelper.REPORTS_COL_X_ID + " = " + ExpenseId +
+                    " AND " + MySQLiteHelper.REPORTS_COL_REPORTED_BY + " = \"" + ReportedBy + "\"", null);
+            Cursor cursor = database.query(MySQLiteHelper.REPORTS_TABLE_NAME, allColumns,MySQLiteHelper.REPORTS_COL_X_ID + " = " + ExpenseId +
+                            " AND " + MySQLiteHelper.REPORTS_COL_REPORTED_BY + " = \"" + ReportedBy + "\"",null, null, null,null);
+            cursor.moveToFirst();
+            Report = cursorToReport(cursor);
             cursor.close();
         }
-        return newReport;
+        return Report;
     }
 
     public List<Report> getReports(String ReportedBy){
@@ -68,6 +83,12 @@ public class ReportDataSource {
         return Reports;
     }
 
+    public void updatePdf(int ExpenseId, String filename) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.REPORTS_COL_PDF,filename);
+        database.update(MySQLiteHelper.REPORTS_TABLE_NAME, values, MySQLiteHelper.REPORTS_COL_X_ID + " = " + ExpenseId , null);
+    }
+
     private Report cursorToReport(Cursor cursor){
         Report report = new Report();
         report.setId(cursor.getInt(0));
@@ -80,4 +101,5 @@ public class ReportDataSource {
         report.setPdflocation(cursor.getString(7));
         return report;
     }
+
 }

@@ -75,6 +75,7 @@ public class Report {
 
     public void setPdflocation(String pdflocation) {
         this.pdflocation = pdflocation;
+
     }
 
     @Override
