@@ -36,7 +36,7 @@ public class ExpenseItemDataSource {
     }
 
     public ExpenseItem createExpenseItem(int ExpenseId, String ExpenseItemName,String Category, float Amount,String Currency,
-                                         String date, String Vendor, String Comments, Double Latitude, Double Longitude){
+                                         String date, String Vendor, String Comments, Double Latitude, Double Longitude, String ReceiptLocation){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.X_ITEMS_COL_X_ID,ExpenseId);
         values.put(MySQLiteHelper.X_ITEMS_COL_ITEM_NAME, ExpenseItemName);
@@ -48,6 +48,7 @@ public class ExpenseItemDataSource {
         values.put(MySQLiteHelper.X_ITEMS_COL_COMMENTS,Comments);
         values.put(MySQLiteHelper.X_ITEMS_COL_LAT,Latitude);
         values.put(MySQLiteHelper.X_ITEMS_COL_LNG,Longitude);
+        values.put(MySQLiteHelper.X_ITEMS_COL_RECEIPT,ReceiptLocation);
         long insertId = database.insert(MySQLiteHelper.X_ITEMS_TABLE_NAME,null,values);
         Cursor cursor= database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns, null,
                 null, null, null, null);
@@ -166,4 +167,21 @@ public class ExpenseItemDataSource {
         return expenseItem;
     }
 
+    public void updateExpenseItem(int ExpenseItemId, int ExpenseId, String ExpenseItemName,String Category, float Amount,String Currency,
+                                  String date, String Vendor, String Comments, Double Latitude, Double Longitude, String ReceiptLocation) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.X_ITEMS_COL_ITEM_NAME, ExpenseItemName);
+        values.put(MySQLiteHelper.X_ITEMS_COL_CATEGORY, Category);
+        values.put(MySQLiteHelper.X_ITEMS_COL_AMOUNT, Amount);
+        values.put(MySQLiteHelper.X_ITEMS_COL_CURRENCY, Currency);
+        values.put(MySQLiteHelper.X_ITEMS_COL_DATE,date);
+        values.put(MySQLiteHelper.X_ITEMS_COL_VENDOR, Vendor);
+        values.put(MySQLiteHelper.X_ITEMS_COL_COMMENTS,Comments);
+        values.put(MySQLiteHelper.X_ITEMS_COL_LAT,Latitude);
+        values.put(MySQLiteHelper.X_ITEMS_COL_LNG,Longitude);
+        values.put(MySQLiteHelper.X_ITEMS_COL_RECEIPT,ReceiptLocation);
+        database.update(MySQLiteHelper.X_ITEMS_TABLE_NAME, values,
+                MySQLiteHelper.X_ITEMS_COL_X_ID + " = " + ExpenseId + " AND " + MySQLiteHelper.X_ITEMS_COL_ITEM_ID + " = " + ExpenseItemId, null);
+
+    }
 }

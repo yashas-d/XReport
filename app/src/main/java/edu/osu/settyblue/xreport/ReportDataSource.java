@@ -33,7 +33,8 @@ public class ReportDataSource {
 
         Report newReport =  new Report();
         Cursor cursor1 = database.query(MySQLiteHelper.REPORTS_TABLE_NAME, allColumns,
-                MySQLiteHelper.REPORTS_COL_REPORTED_BY+" = \""+ReportedBy+"\"",null, null, null,MySQLiteHelper.REPORTS_COL_REPORTED_DATE);
+                MySQLiteHelper.REPORTS_COL_X_ID + " = " + ExpenseId+ " AND "+MySQLiteHelper.REPORTS_COL_REPORTED_BY+" = \""+ReportedBy+"\"",
+                null, null, null,MySQLiteHelper.REPORTS_COL_REPORTED_DATE);
         if (!cursor1.moveToFirst()){
             ContentValues values = new ContentValues();
             values.put(MySQLiteHelper.REPORTS_COL_X_ID,ExpenseId);

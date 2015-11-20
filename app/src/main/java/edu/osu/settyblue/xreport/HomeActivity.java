@@ -28,6 +28,15 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(expensesIntent);
             }
         });
+
+        final Button reportsButton = (Button) findViewById(R.id.reportsButton);
+        reportsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent reportsIntent = new Intent(mContext, ReportsActivity.class);
+                startActivity(reportsIntent);
+            }
+        });
     }
 
     @Override

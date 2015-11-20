@@ -79,6 +79,6 @@ public class Report {
 
     @Override
     public String toString(){
-        return getExpenseid()+ " "+getReportedto()+" "+getApprovalstatus();
+        return getExpenseid()+" "+getComments()+" "+getReportedto()+" "+getApprovalstatus();
     }
 }

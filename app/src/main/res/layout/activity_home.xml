@@ -16,10 +16,12 @@
         android:layout_height="wrap_content"
         android:text="@string/expenses"/>
     <Button
+        android:id="@+id/reportsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/report"/>
     <Button
+        android:id="@+id/approvalsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/approvals"/>

@@ -103,9 +103,6 @@ public class EditExpenseActivity extends AppCompatActivity {
 
         //List<ExpenseItem> values = expenseitemdatasource.getAllExpenseItems();
         final List<ExpenseItem> values = expenseitemdatasource.getExpenseItems(xid);
-        for(int i = 0; i < values.size(); i++){
-            Log.i(TAG, values.get(i).toString());
-        }
         //
         final ArrayAdapter adapterExpense = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, values); //list,values
@@ -162,10 +159,11 @@ public class EditExpenseActivity extends AppCompatActivity {
         reportExpenseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //
-                //write code to add it on reports table.
-                reportdatasource.createReport(xid,"Rakshith","Larry Elison","No","","11/21/2015","file path");
-                //
                 EditText expenseEventName = (EditText) findViewById(R.id.eventname);
+                //write code to add it on reports table.
+                reportdatasource.createReport(xid,"Rakshith","Larry Elison","No",expenseEventName.getText().toString(),"11/21/2015","file path");
+                //
+
                 //get the message body ready.
                 StringBuffer messageBody = new StringBuffer();
                 messageBody.append(expenseEventName.getText().toString()+'\n');

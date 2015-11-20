@@ -44,8 +44,11 @@ public class EditExpenseItemActivity extends AppCompatActivity {
     private ExpenseItemDataSource datasource;
     String finalfilename = null;
     ImageView myImage;
+    String imageLocation;
     int x_id;
     int x_item_id;
+    double glat;
+    double glng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         mContext = this;
         final int expenseId = getIntent().getIntExtra("expenseId", 1);x_id = expenseId;
         final int expenseItemId = getIntent().getIntExtra("expenseItemId", 1);x_item_id = expenseItemId;
-        boolean fromCreate = getIntent().getBooleanExtra("fromCreate", false);
+        final boolean fromCreate = getIntent().getBooleanExtra("fromCreate", false);
         //Toast.makeText(mContext, "created an expense with id : " + expenseId, Toast.LENGTH_LONG).show();
         datasource = new ExpenseItemDataSource(this);
         datasource.open();
@@ -69,6 +72,9 @@ public class EditExpenseItemActivity extends AppCompatActivity {
             ExpenseItem  currentExpenseItem = datasource.queryExpenseItem(expenseId,expenseItemId);
             x_id = currentExpenseItem.getExpenseId();
             x_item_id = currentExpenseItem.getExpenseItemId();
+            glat = currentExpenseItem.getLatitude();
+            glng = currentExpenseItem.getLongitude();
+            imageLocation = currentExpenseItem.getReceiptImage();
             expenseItemName.setText(currentExpenseItem.getItemName());
             categorySpinner.setSelection(2);
             expenseItemAmount.setText(Float.toString(currentExpenseItem.getAmount()));
@@ -103,11 +109,16 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                 EditText expenseItemDate = (EditText) findViewById(R.id.expenseItemDate);
                 EditText expenseItemVendor = (EditText) findViewById(R.id.expenseItemVendor);
                 EditText expenseItemComments = (EditText) findViewById(R.id.expenseItemComments);
-
-                ExpenseItem expi = datasource.createExpenseItem(expenseId, expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
-                        Float.parseFloat(expenseItemAmount.getText().toString()), currencySpinner.getSelectedItem().toString(),
-                        expenseItemDate.getText().toString(), expenseItemVendor.getText().toString(), expenseItemComments.getText().toString(), null, null);
-                x_item_id = expi.getExpenseItemId();
+                if(fromCreate){
+                    ExpenseItem expi = datasource.createExpenseItem(expenseId, expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
+                            Float.parseFloat(expenseItemAmount.getText().toString()), currencySpinner.getSelectedItem().toString(),
+                            expenseItemDate.getText().toString(), expenseItemVendor.getText().toString(), expenseItemComments.getText().toString(),glat,glng,imageLocation);
+                    x_item_id = expi.getExpenseItemId();
+                }else{
+                    datasource.updateExpenseItem(x_item_id, x_id, expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
+                            Float.parseFloat(expenseItemAmount.getText().toString()), currencySpinner.getSelectedItem().toString(),
+                            expenseItemDate.getText().toString(), expenseItemVendor.getText().toString(), expenseItemComments.getText().toString(),glat,glng,imageLocation);
+                }
                 mContext.finish();
             }
         });
@@ -155,9 +166,9 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                     // Initialize the location fields
                     if (location != null) {
                         System.out.println("Provider " + provider + " has been selected.");
-                        lat = (double) (location.getLatitude());
-                        lng = (double) (location.getLongitude());
-                        datasource.updateLocation(x_id,x_item_id,lat,lng);
+                        lat = (double) (location.getLatitude());glat = lat;
+                        lng = (double) (location.getLongitude());glng = lng;
+                        //datasource.updateLocation(x_id,x_item_id,lat,lng);
                         Toast.makeText(mContext, "lat : " + lat + ", lng : " + lng, Toast.LENGTH_LONG).show();
 
                     } else {
@@ -191,7 +202,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         //Uri uri = Uri.fromFile(new File(URI.create(imageFileName)));
 
         //Bitmap image = new Bitmap();
-        if(imageFileName != null || !fromCreate){
+        if(imageFileName != null && !fromCreate){
             try {
                 Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.parse(imageFileName));
                 myImage = (ImageView) findViewById(R.id.imageView);
@@ -224,7 +235,8 @@ public class EditExpenseItemActivity extends AppCompatActivity {
             fos.close();
 
             String fname = MediaStore.Images.Media.insertImage(getContentResolver(), pictureFile.getAbsolutePath(), pictureFile.getName(),"");
-            datasource.updateReceiptImageLocation(x_id,x_item_id,fname);
+            imageLocation = fname;
+            //datasource.updateReceiptImageLocation(x_id,x_item_id,fname);
             Toast.makeText(mContext, "New Image saved:" + photoFile,
                     Toast.LENGTH_LONG).show();
         } catch (Exception error) {
