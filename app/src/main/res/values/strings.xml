@@ -71,4 +71,5 @@
     </string-array>
     <string name="title_activity_edit_expense">EditExpense</string>
     <string name="title_activity_edit_expense_item">EditExpenseItemActivity</string>
+    <string name="title_activity_reports">ReportsActivity</string>
 </resources>

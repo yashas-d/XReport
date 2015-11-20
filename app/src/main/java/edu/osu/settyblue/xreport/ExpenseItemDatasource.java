@@ -20,7 +20,8 @@ public class ExpenseItemDataSource {
     private String[] allColumns = { MySQLiteHelper.X_ITEMS_COL_ITEM_ID,MySQLiteHelper.X_ITEMS_COL_X_ID,
             MySQLiteHelper.X_ITEMS_COL_ITEM_NAME,MySQLiteHelper.X_ITEMS_COL_CATEGORY,MySQLiteHelper.X_ITEMS_COL_AMOUNT,
             MySQLiteHelper.X_ITEMS_COL_CURRENCY,MySQLiteHelper.X_ITEMS_COL_DATE,MySQLiteHelper.X_ITEMS_COL_VENDOR,
-            MySQLiteHelper.X_ITEMS_COL_COMMENTS, MySQLiteHelper.X_ITEMS_COL_LAT, MySQLiteHelper.X_ITEMS_COL_LNG};
+            MySQLiteHelper.X_ITEMS_COL_COMMENTS,MySQLiteHelper.X_ITEMS_COL_RECEIPT, MySQLiteHelper.X_ITEMS_COL_LAT,
+            MySQLiteHelper.X_ITEMS_COL_LNG};
 
     public ExpenseItemDataSource(Context context){
         dbHelper = new MySQLiteHelper(context);
@@ -123,9 +124,31 @@ public class ExpenseItemDataSource {
         cursor.close();
         return totalAmount;
     }
-    public void deleteAllExpenseItems(){
-        database.execSQL("delete from "+MySQLiteHelper.X_ITEMS_TABLE_NAME);
+
+    public void updateReceiptImageLocation(int ExpenseId, int ExpenseItemId, String location) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.X_ITEMS_COL_RECEIPT, location);
+        database.update(MySQLiteHelper.X_ITEMS_TABLE_NAME, values,
+                MySQLiteHelper.X_ITEMS_COL_X_ID + " = " + ExpenseId + " AND " + MySQLiteHelper.X_ITEMS_COL_ITEM_ID + " = " + ExpenseItemId, null);
+
     }
+
+    public String getReceiptImageName(int ExpenseId, int ExpenseItemId) {
+        Cursor cursor = database.query(MySQLiteHelper.X_ITEMS_TABLE_NAME, allColumns,
+                MySQLiteHelper.X_ITEMS_COL_X_ID + " = " + ExpenseId + " AND " + MySQLiteHelper.X_ITEMS_COL_ITEM_ID + " = " + ExpenseItemId, null, null, null, MySQLiteHelper.X_ITEMS_COL_DATE);
+        if(cursor.moveToFirst()){
+            ExpenseItem newExpenseItem = cursorToExpenseItem(cursor);
+            cursor.close();
+            return newExpenseItem.getReceiptImage();
+        }else{
+            return "";
+        }
+    }
+
+    public void deleteAllExpenseItems(){
+        database.execSQL("delete from " + MySQLiteHelper.X_ITEMS_TABLE_NAME);
+    }
+
     private ExpenseItem cursorToExpenseItem(Cursor cursor){
         ExpenseItem expenseItem = new ExpenseItem();
         expenseItem.setExpenseItemId(cursor.getInt(0));
@@ -137,8 +160,10 @@ public class ExpenseItemDataSource {
         expenseItem.setDate(cursor.getString(6));
         expenseItem.setVendor(cursor.getString(7));
         expenseItem.setComments(cursor.getString(8));
-        expenseItem.setLattitude(cursor.getDouble(9));
-        expenseItem.setLongitude(cursor.getDouble(10));
+        expenseItem.setReceiptImage(cursor.getString(9));
+        expenseItem.setLatitude(cursor.getDouble(10));
+        expenseItem.setLongitude(cursor.getDouble(11));
         return expenseItem;
     }
+
 }

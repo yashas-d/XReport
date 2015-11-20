@@ -15,14 +15,16 @@ public class ExpenseItem {
     private String date;
     private String vendor;
     private String comments;
-    private double lattitude;
+    private String receiptImage;
+    private double latitude;
+    private double longitude;
 
-    public double getLattitude() {
-        return lattitude;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLattitude(double lattitude) {
-        this.lattitude = lattitude;
+    public void setLatitude(double lattitude) {
+        this.latitude = lattitude;
     }
 
     public double getLongitude() {
@@ -32,8 +34,6 @@ public class ExpenseItem {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-    private double longitude;
 
     public String getCategory() {
         return category;
@@ -109,5 +109,13 @@ public class ExpenseItem {
 
     public String toString(){
         return expenseItemId+" " + itemName + " "+amount;
+    }
+
+    public String getReceiptImage() {
+        return receiptImage;
+    }
+
+    public void setReceiptImage(String receiptImage) {
+        this.receiptImage = receiptImage;
     }
 }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 /*import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;*/
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,9 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,13 +44,15 @@ public class EditExpenseItemActivity extends AppCompatActivity {
     private ExpenseItemDataSource datasource;
     String finalfilename = null;
     ImageView myImage;
+    int x_id;
+    int x_item_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_expense_item);
         mContext = this;
-        final int expenseId = getIntent().getIntExtra("expenseId", 1);
-        final int expenseItemId = getIntent().getIntExtra("expenseItemId", 1);
+        final int expenseId = getIntent().getIntExtra("expenseId", 1);x_id = expenseId;
+        final int expenseItemId = getIntent().getIntExtra("expenseItemId", 1);x_item_id = expenseItemId;
         boolean fromCreate = getIntent().getBooleanExtra("fromCreate", false);
         //Toast.makeText(mContext, "created an expense with id : " + expenseId, Toast.LENGTH_LONG).show();
         datasource = new ExpenseItemDataSource(this);
@@ -61,6 +67,8 @@ public class EditExpenseItemActivity extends AppCompatActivity {
             EditText expenseItemVendor = (EditText)findViewById(R.id.expenseItemVendor);
             EditText expenseItemComments = (EditText)findViewById(R.id.expenseItemComments);
             ExpenseItem  currentExpenseItem = datasource.queryExpenseItem(expenseId,expenseItemId);
+            x_id = currentExpenseItem.getExpenseId();
+            x_item_id = currentExpenseItem.getExpenseItemId();
             expenseItemName.setText(currentExpenseItem.getItemName());
             categorySpinner.setSelection(2);
             expenseItemAmount.setText(Float.toString(currentExpenseItem.getAmount()));
@@ -96,9 +104,10 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                 EditText expenseItemVendor = (EditText) findViewById(R.id.expenseItemVendor);
                 EditText expenseItemComments = (EditText) findViewById(R.id.expenseItemComments);
 
-                datasource.createExpenseItem(expenseId, expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
+                ExpenseItem expi = datasource.createExpenseItem(expenseId, expenseItemName.getText().toString(), categorySpinner.getSelectedItem().toString(),
                         Float.parseFloat(expenseItemAmount.getText().toString()), currencySpinner.getSelectedItem().toString(),
-                        expenseItemDate.getText().toString(), expenseItemVendor.getText().toString(), expenseItemComments.getText().toString(),null,null);
+                        expenseItemDate.getText().toString(), expenseItemVendor.getText().toString(), expenseItemComments.getText().toString(), null, null);
+                x_item_id = expi.getExpenseItemId();
                 mContext.finish();
             }
         });
@@ -148,7 +157,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                         System.out.println("Provider " + provider + " has been selected.");
                         lat = (double) (location.getLatitude());
                         lng = (double) (location.getLongitude());
-                        datasource.updateLocation(expenseId,expenseItemId,lat,lng);
+                        datasource.updateLocation(x_id,x_item_id,lat,lng);
                         Toast.makeText(mContext, "lat : " + lat + ", lng : " + lng, Toast.LENGTH_LONG).show();
 
                     } else {
@@ -174,6 +183,23 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                 //mContext.finish();
             }
         });
+
+        //render receipt image.
+        String imageFileName = datasource.getReceiptImageName(x_id, x_item_id);
+        //if(imageFileName == null)imageFileName="1448004123183";
+        //Uri uri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + imageFileName + ".jpg"));
+        //Uri uri = Uri.fromFile(new File(URI.create(imageFileName)));
+
+        //Bitmap image = new Bitmap();
+        if(imageFileName != null || !fromCreate){
+            try {
+                Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.parse(imageFileName));
+                myImage = (ImageView) findViewById(R.id.imageView);
+                myImage.setImageBitmap(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //testing start
@@ -186,16 +212,19 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         myImage.setImageBitmap(bp);
 
         File pictureFileDir = getDir();
-        String photoFile = "Picture_Taken" + ".jpg";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+        String date = dateFormat.format(new Date());
+        String photoFile = "Picture_" + date + ".jpg";
         String filename = pictureFileDir.getPath() + File.separator + photoFile;
         File pictureFile = new File(filename);
         try {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bp.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            fos.write(bytes.toByteArray());
+            bp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
+
+            String fname = MediaStore.Images.Media.insertImage(getContentResolver(), pictureFile.getAbsolutePath(), pictureFile.getName(),"");
+            datasource.updateReceiptImageLocation(x_id,x_item_id,fname);
             Toast.makeText(mContext, "New Image saved:" + photoFile,
                     Toast.LENGTH_LONG).show();
         } catch (Exception error) {
