@@ -15,6 +15,25 @@ public class ExpenseItem {
     private String date;
     private String vendor;
     private String comments;
+    private double lattitude;
+
+    public double getLattitude() {
+        return lattitude;
+    }
+
+    public void setLattitude(double lattitude) {
+        this.lattitude = lattitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    private double longitude;
 
     public String getCategory() {
         return category;

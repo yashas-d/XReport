@@ -11,7 +11,7 @@ import android.util.Log;
 public class MySQLiteHelper extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "myschema.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     public static final String X_TABLE_NAME = "expense";
     public static final String X_COL_EXPENSE_ID = "expense_id";
@@ -32,6 +32,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     public static final String X_ITEMS_COL_VENDOR = "vendor";
     public static final String X_ITEMS_COL_COMMENTS = "comments";
     public static final String X_ITEMS_COL_RECEIPT = "receipt";
+    public static final String X_ITEMS_COL_LAT = "latitude";
+    public static final String X_ITEMS_COL_LNG = "longitude";
 
     public static final String USERS_TABLE_NAME = "users";
     public static final String USERS_COL_ID = "id";
@@ -58,7 +60,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
             + " integer not null, " + X_ITEMS_COL_ITEM_NAME + " text not null, " + X_ITEMS_COL_CATEGORY
             + " text , " + X_ITEMS_COL_AMOUNT + " real not null, " + X_ITEMS_COL_CURRENCY
             + " text, " + X_ITEMS_COL_DATE + " date, " + X_ITEMS_COL_VENDOR
-            + " text, " + X_ITEMS_COL_COMMENTS + " text, " + X_ITEMS_COL_RECEIPT + " blob); ";
+            + " text, " + X_ITEMS_COL_COMMENTS + " text, " + X_ITEMS_COL_RECEIPT + " blob, " + X_ITEMS_COL_LAT
+            + " real, " + X_ITEMS_COL_LNG + " real);";
     private static final String EXPENSE_TABLE_CREATE = "create table " + X_TABLE_NAME
             + "(" + X_COL_EXPENSE_ID + " integer primary key autoincrement, " + X_COL_EVENT_NAME
             + " text, " + X_COL_DATE + " date, " + X_COL_DAYS + " integer, " + X_COL_SUBMITSTATUS
