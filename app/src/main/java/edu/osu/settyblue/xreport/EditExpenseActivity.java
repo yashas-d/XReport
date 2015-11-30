@@ -195,7 +195,7 @@ public class EditExpenseActivity extends AppCompatActivity {
                     //File reportsFile = new File(sdDir, "expense_report.pdf");
                     String filename = reportsFileDir.getPath() + File.separator + "expense_report_for_"+expenseEventName.getText().toString()+".pdf";
                     File reportsFile = new File(filename);
-                    //report.setPdflocation(filename);
+                    //Uri uri = Uri.fromFile(reportsFile);
                     reportdatasource.updatePdf(report.getExpenseid(),filename);
                     //
                     Document doc = new Document();
