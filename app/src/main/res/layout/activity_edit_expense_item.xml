@@ -71,10 +71,35 @@
         android:layout_height="wrap_content"
         android:id="@+id/expenseItemComments"
         android:hint="@string/comments"/>
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:id="@+id/save_expense_item"
-        android:layout_gravity="center_horizontal"/>
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/camera_snapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_camera"/>
+        <ImageButton
+            android:id="@+id/gps_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/gps_button"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="40dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:id="@+id/save_expense_item"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

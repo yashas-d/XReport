@@ -35,7 +35,9 @@
     <string name="report_expense">Report Expense</string>
     <string name="expense_report_submitted">Report Submitted</string>
     <string name="total_expense_amount">Total Expense Amount :</string>
-
+    <string name="hello">Hello</string>
+    <string name="title_activity_make_photo">Click Photo</string>
+    <string name="title_activity_image_pick">title_activity_image_pick</string>
     <string-array name="sort_items_array">
         <item>Name</item>
         <item>Date</item>
@@ -69,4 +71,6 @@
     </string-array>
     <string name="title_activity_edit_expense">EditExpense</string>
     <string name="title_activity_edit_expense_item">EditExpenseItemActivity</string>
+    <string name="title_activity_reports">ReportsActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

@@ -15,6 +15,25 @@ public class ExpenseItem {
     private String date;
     private String vendor;
     private String comments;
+    private String receiptImage;
+    private double latitude;
+    private double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double lattitude) {
+        this.latitude = lattitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getCategory() {
         return category;
@@ -90,5 +109,13 @@ public class ExpenseItem {
 
     public String toString(){
         return expenseItemId+" " + itemName + " "+amount;
+    }
+
+    public String getReceiptImage() {
+        return receiptImage;
+    }
+
+    public void setReceiptImage(String receiptImage) {
+        this.receiptImage = receiptImage;
     }
 }

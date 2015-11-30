@@ -2,11 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.osu.settyblue.xreport" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <permission
+        android:name="in.wptrafficanalyzer.locationnearby.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="in.wptrafficanalyzer.locationnearby.permission.MAPS_RECEIVE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAabHwQ037wWyJt8DaJWrPRxr_x_vqXPN8" />
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name" >
@@ -59,6 +77,23 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.osu.settyblue.xreport.EditExpenseActivity" />
+        </activity>
+        <activity
+            android:name=".MakePhotoActivity"
+            android:label="@string/title_activity_make_photo" >
+        </activity>
+        <activity
+            android:name=".ImagePickActivity"
+            android:label="@string/title_activity_image_pick" >
+        </activity>
+        <activity
+            android:name=".ReportsActivity"
+            android:label="@string/title_activity_reports"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.osu.settyblue.xreport.HomeActivity" />
         </activity>
     </application>
 
