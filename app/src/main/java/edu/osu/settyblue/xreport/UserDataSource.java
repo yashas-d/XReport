@@ -42,6 +42,22 @@ public class UserDataSource {
         return newUser;
     }
 
+    public User getUser(String Username, String Password,String EmailId,String ApproverName){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.USERS_COL_USERNAME,Username);
+        values.put(MySQLiteHelper.USERS_COL_PASSWORD,Password);
+        values.put(MySQLiteHelper.USERS_COL_EMAIL,EmailId);
+        values.put(MySQLiteHelper.USERS_COL_APPROVER,ApproverName);
+
+        long insertId = database.insert(MySQLiteHelper.USERS_TABLE_NAME,null,values);
+        Cursor cursor = database.query(MySQLiteHelper.USERS_TABLE_NAME, allColumns, null,
+                null, null, null, null);
+        cursor.moveToFirst();
+        User newUser = cursorToUser(cursor);
+        cursor.close();
+        return newUser;
+    }
+
     private User cursorToUser(Cursor cursor){
         User user = new User();
         user.setId(cursor.getInt(0));

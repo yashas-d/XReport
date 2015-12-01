@@ -105,6 +105,7 @@ public class ExpensesActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        expensedatasource.close();
         super.onDestroy();
         Log.i("ExpensesActivity", "onDestroy called.");
     }

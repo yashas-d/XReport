@@ -193,7 +193,7 @@ public class EditExpenseActivity extends AppCompatActivity {
                             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                     File reportsFileDir = new File(sdDir, "Reports");
                     //File reportsFile = new File(sdDir, "expense_report.pdf");
-                    String filename = reportsFileDir.getPath() + File.separator + "expense_report_for_"+expenseEventName.getText().toString()+".pdf";
+                    String filename = reportsFileDir.getPath() + File.separator + "expense_report_for_"+".pdf";//expenseEventName.getText().toString()+
                     File reportsFile = new File(filename);
                     //Uri uri = Uri.fromFile(reportsFile);
                     reportdatasource.updatePdf(report.getExpenseid(),filename);
