@@ -85,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
+        datasource.close();
         super.onDestroy();
         Log.i("RegisterActivity", "onDestroy called.");
     }

@@ -62,4 +62,28 @@ public class ReportsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.i("ReportsActivity", "onPause called.");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("ReportsActivity", "onStop called.");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.i("ReportsActivity", "onRestart called.");
+    }
+
+    @Override
+    public void onDestroy(){
+        reportdatasource.close();
+        super.onDestroy();
+        Log.i("ReportsActivity", "onDestroy called.");
+    }
 }

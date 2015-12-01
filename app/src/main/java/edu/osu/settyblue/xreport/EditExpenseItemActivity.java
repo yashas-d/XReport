@@ -163,6 +163,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                     provider = locationManager.getBestProvider(criteria, false);
 
                     Location location = locationManager.getLastKnownLocation(provider);
+
                     // Initialize the location fields
                     if (location != null) {
                         System.out.println("Provider " + provider + " has been selected.");
@@ -172,7 +173,10 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                         Toast.makeText(mContext, "lat : " + lat + ", lng : " + lng, Toast.LENGTH_LONG).show();
 
                     } else {
-
+                        //location.setLatitude(93.111);
+                        //location.setLongitude(89.11);
+                        lat = 93.111;lng = 89.11;
+                        Toast.makeText(mContext, "lat : " + lat + ", lng : " + lng, Toast.LENGTH_LONG).show();
                     }
                 }catch (SecurityException se)
                 {
@@ -218,32 +222,36 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
 
-        Bitmap bp = (Bitmap) data.getExtras().get("data");
-        myImage = (ImageView) findViewById(R.id.imageView);
-        myImage.setImageBitmap(bp);
+        if(data.getExtras() != null){
+            Bitmap bp = (Bitmap) data.getExtras().get("data");
+            myImage = (ImageView) findViewById(R.id.imageView);
+            myImage.setImageBitmap(bp);
 
-        File pictureFileDir = getDir();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
-        String date = dateFormat.format(new Date());
-        String photoFile = "Picture_" + date + ".jpg";
-        String filename = pictureFileDir.getPath() + File.separator + photoFile;
-        File pictureFile = new File(filename);
-        try {
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            bp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
+            File pictureFileDir = getDir();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+            String date = dateFormat.format(new Date());
+            String photoFile = "Picture_" + date + ".jpg";
+            String filename = pictureFileDir.getPath() + File.separator + photoFile;
+            File pictureFile = new File(filename);
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                bp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
 
-            String fname = MediaStore.Images.Media.insertImage(getContentResolver(), pictureFile.getAbsolutePath(), pictureFile.getName(),"");
-            imageLocation = fname;
-            //datasource.updateReceiptImageLocation(x_id,x_item_id,fname);
-            Toast.makeText(mContext, "New Image saved:" + photoFile,
-                    Toast.LENGTH_LONG).show();
-        } catch (Exception error) {
-            Log.d(MakePhotoActivity.DEBUG_TAG, "File" + filename + "not saved: "
-                    + error.getMessage());
-            Toast.makeText(mContext, "Image could not be saved.",
-                    Toast.LENGTH_LONG).show();
+                String fname = MediaStore.Images.Media.insertImage(getContentResolver(), pictureFile.getAbsolutePath(), pictureFile.getName(),"");
+                imageLocation = fname;
+                //datasource.updateReceiptImageLocation(x_id,x_item_id,fname);
+                Toast.makeText(mContext, "New Image saved:" + photoFile,
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception error) {
+                Log.d(MakePhotoActivity.DEBUG_TAG, "File" + filename + "not saved: "
+                        + error.getMessage());
+                Toast.makeText(mContext, "Image could not be saved.",
+                        Toast.LENGTH_LONG).show();
+            }
+        }else{
+            //do what?
         }
         //onResumeModified(filename);
     }
@@ -288,4 +296,28 @@ public class EditExpenseItemActivity extends AppCompatActivity {
         return new File(sdDir, "CameraAPIDemo");
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.i("EditExpenseItemActivity", "onPause called.");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("EditExpenseItemActivity", "onStop called.");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.i("EditExpenseItemActivity", "onRestart called.");
+    }
+
+    @Override
+    public void onDestroy(){
+        datasource.close();
+        super.onDestroy();
+        Log.i("EditExpenseItemActivity", "onDestroy called.");
+    }
 }
