@@ -86,6 +86,13 @@ public class EditExpenseActivity extends AppCompatActivity {
         EditText expenseDate = (EditText)findViewById(R.id.expensedate);
         Button reportExpenseButton = (Button)findViewById(R.id.report_expense_button);
 
+        //
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //
         if(!fromCreate){
             Expense expense = expensedatasource.queryExpense(currentExpenseId);
             expenseEventName.setText(expense.getName());
