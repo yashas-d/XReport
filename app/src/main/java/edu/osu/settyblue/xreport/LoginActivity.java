@@ -2,6 +2,8 @@ package edu.osu.settyblue.xreport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
     Context mContext;
+    private UserDataSource mUserDataSource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,13 +27,30 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         Log.i("LoginActivity", "onCreate called.");
 
+        mUserDataSource = new UserDataSource(this);
+        mUserDataSource.open();
+
+        /*
+        if(!isNetworkAvailable()){
+            Toast.makeText(mContext, "Please switch on the Internet. ", Toast.LENGTH_LONG).show();
+        }*/
+        //references to userid and password fields.
+        final EditText username = (EditText)findViewById(R.id.username);
+        final EditText password = (EditText)findViewById(R.id.password);
         //references to button.
         final Button loginbutton = (Button) findViewById(R.id.login_button);
         loginbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                Intent homeIntent = new Intent(mContext, HomeActivity.class);
-                startActivity(homeIntent);
+                //Intent homeIntent = new Intent(mContext, HomeActivity.class);
+                //startActivity(homeIntent);
+
+                if(mUserDataSource.getUser(username.getText().toString(),password.getText().toString()) != null){
+                    Intent homeIntent = new Intent(mContext, HomeActivity.class);
+                    startActivity(homeIntent);
+                }else{
+                    Toast.makeText(mContext, "Username and password doesnt match. ", Toast.LENGTH_LONG).show();
+                }
             }
         });
         //
@@ -94,5 +116,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 }
