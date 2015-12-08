@@ -172,7 +172,7 @@ public class EditExpenseItemActivity extends AppCompatActivity {
                         //datasource.updateLocation(x_id,x_item_id,lat,lng);
                         Toast.makeText(mContext, "lat : " + lat + ", lng : " + lng, Toast.LENGTH_LONG).show();
 
-                    } else {
+                    } else if(enabled){
                         //location.setLatitude(93.111);
                         //location.setLongitude(89.11);
                         lat = 93.111;lng = 89.11;
