@@ -3,7 +3,6 @@ package edu.osu.settyblue.xreport;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by rakshith on 10/30/2015.
